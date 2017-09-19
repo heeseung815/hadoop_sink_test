@@ -1,0 +1,12 @@
+target/
+project/project/
+.idea/
+.history
+.metadata
+.project
+**/target/
+**/**/target/
+**/*.iml
+logs/
+tmp/
+dist/
