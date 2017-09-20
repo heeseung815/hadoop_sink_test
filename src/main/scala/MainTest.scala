@@ -38,7 +38,7 @@ object MainTest extends App {
 
 //  runnableGraph.onComplete(result => println(s"done"))
 
-  val source = Source(Array("1", "2", "3").toVector)
+  val source = Source(Array("1\n", "2\n", "3\n").toVector)
 //  val source = Source.single("Hello World!")
   val sink = Sink.fromGraph(HdfsPublisher)
   val runnableGraph = source.to(sink)
