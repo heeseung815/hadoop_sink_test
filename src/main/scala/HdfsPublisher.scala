@@ -53,14 +53,26 @@ object HdfsPublisher extends GraphStage[SinkShape[String]] {
 
       setHandler(in, new InHandler {
         override def onPush(): Unit = {
+          // 쓰고자 하는 파일의 사이즈가 기준치를 넘어섰는지 먼저 체크한다.
+          val currentFileStatus = fs.getFileStatus(currentFilePath)
+          if (currentFileStatus.getLen >= (limit * 1024)) {
+            //
+          }
+
+          os.close()
+          os = null
+
+          pull(in)
+
+
+          /*
           if (os == null) {
             println(s"os closed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             os = fs.append(currentFilePath)
           }
 
-          val currentFileStatus = fs.getFileStatus(currentFilePath)
           println(s"# Current file status: ${currentFileStatus.toString}")
-          // 현재 스트림이 오픈된 파일의 사이즈가 기준치를 넘어서면 새로운 파일을 생성하고 새로운 스트림을 오픈한다.
+          // 파일 사이즈가 기준치를 넘어서면 새로운 파일을 생성하고 새로운 스트림을 오픈한다.
           // 추가 내용: 스트림이 연결된 상태에서는 변경되는 파일 사이즈를 확인할 수 없다.
           println(s"# File size: ${currentFileStatus.getLen} bytes")
           if (currentFileStatus.getLen > (limit * 1024)) {
@@ -80,9 +92,9 @@ object HdfsPublisher extends GraphStage[SinkShape[String]] {
           os.close()
           os = null
 
-          println("----------------------------------------------------------------------------------------------------------------------------------------\n")
+          println("----------------------------------------------------------------------------------------------------\n")
           pull(in)
-
+          */
 
           // 입력이 들어올 때 마다 현재 파일의 사이즈를 체크하여 기준치를 넘어선 경우 새로운 파일에 저장한다.
           // 저장된 파일의 사이즈를 구해올 수 있는 지 먼저 확인
