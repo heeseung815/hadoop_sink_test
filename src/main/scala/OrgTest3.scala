@@ -74,7 +74,8 @@ object OrgTest3 extends App {
 //    val booleanVector = batch.cols(4).asInstanceOf[LongColumnVector]
 //    val stringVector = batch.cols(5).asInstanceOf[BytesColumnVector]
     val stringVector = batch2.cols(0).asInstanceOf[BytesColumnVector]
-    val stringVector2 = batch2.cols(1).asInstanceOf[BytesColumnVector]
+//    val stringVector2 = batch2.cols(1).asInstanceOf[BytesColumnVector]
+//    println(s"###### ${stringVector2.toString(0)}")
 
 
     var r = 0
@@ -82,7 +83,6 @@ object OrgTest3 extends App {
     while ( {
       r < batch2.size
     }) {
-      println(s"###### ${stringVector.toString(r)} ${stringVector2.toString(r)}")
 //      val intValue = intVector.vector(r).toInt
 //      val longValue = longVector.vector(r)
 //      val doubleValue = doubleVector.vector(r)
@@ -91,7 +91,7 @@ object OrgTest3 extends App {
       val stringValue = new String(stringVector.vector(r), stringVector.start(r), stringVector.length(r))
 //      val stringValue2 = new String(stringVector2.vector(r), stringVector2.start(r), stringVector2.length(r))
 //      System.out.println(intValue + ", " + longValue + ", " + doubleValue + ", " + floatValue + ", " + boolValue + ", " + stringValue)
-//      println(s"# $stringValue")
+      println(s"# $stringValue")
 //      println(s"# $stringValue, $stringValue2")
 
       {
