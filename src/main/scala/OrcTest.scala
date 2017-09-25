@@ -33,7 +33,7 @@ object OrcTest extends App {
 //  os.close()
 //
 //
-  val tempPath = new Path("/Users/hscho/test123.orc")
+  val tempPath = new Path("/test123.orc")
   val writer: Writer = OrcFile.createWriter(tempPath, OrcFile.writerOptions(conf).inspector(inspector).stripeSize(100000).bufferSize(10000))
   writer.addRow(orcLine)
   writer.close()

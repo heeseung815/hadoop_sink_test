@@ -9,6 +9,8 @@ lazy val akkaVersion = "2.5.4"
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+//  "org.apache.orc" % "orc-mapreduce" % "1.4.0",
+//  "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.8.1"
   "org.apache.hadoop" % "hadoop-client" % "2.8.1",
 //  "org.apache.hadoop" % "hadoop-common" % "2.8.1",
   "org.apache.hive" % "hive-exec" % "2.3.0",
