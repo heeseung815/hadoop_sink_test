@@ -7,7 +7,7 @@ import akka.util.ByteString
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
 
-object Main extends App{
+object Main extends App {
 
   private var temp: String = _
 

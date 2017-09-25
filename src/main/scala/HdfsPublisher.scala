@@ -10,6 +10,8 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.permission.FsAction
 import org.apache.hadoop.fs.{FSDataOutputStream, FileStatus, FileSystem, Path}
 
+import scala.collection.mutable
+
 // TODO: 리모트로 하둡 파일시스템 연결이 안되는 경우 재시도하는 로직을 생각해 두어야한다.
 object HdfsPublisher extends GraphStage[SinkShape[String]] {
 
@@ -32,6 +34,9 @@ object HdfsPublisher extends GraphStage[SinkShape[String]] {
   var fs: FileSystem = FileSystem.get(conf)
   private var os: FSDataOutputStream = _
 
+  // TODO: 센서별로 파일스트림 관리할 수 있는 컬렉션 필요
+  private val sensorStreamTable = mutable.Map[String, FSDataOutputStream]()
+
   // for sensor
   val sensorId = "sensor001"
 
@@ -41,6 +46,14 @@ object HdfsPublisher extends GraphStage[SinkShape[String]] {
 
   // for file
   var currentFilePath: Path = _
+
+  private def getSensorStream(sensorId: String): Option[FSDataOutputStream] = {
+    sensorStreamTable.get(sensorId)
+  }
+  private def registerSensorStream(sensorId: String, outputStream: FSDataOutputStream) = {
+    println(s"reigster sensor stream: $sensorId")
+    sensorStreamTable.put(sensorId, outputStream)
+  }
 
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
     new GraphStageLogic(shape) {
