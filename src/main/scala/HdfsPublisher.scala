@@ -28,9 +28,9 @@ object HdfsPublisher extends GraphStage[SinkShape[String]] {
 
   // for hadoop configuration
   val conf = new Configuration()
-  conf.set("fs.default.name", "hdfs://localhost:9000")
+  conf.set("fs.defaultFS", "hdfs://localhost:9000")
   conf.set("dfs.support.append", "true")
-  System.setProperty("HADOOP_USER_NAME", "hscho")
+//  System.setProperty("HADOOP_USER_NAME", "hscho")
   var fs: FileSystem = FileSystem.get(conf)
   private var os: FSDataOutputStream = _
 

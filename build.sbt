@@ -12,12 +12,15 @@ libraryDependencies ++= Seq(
 //  "org.apache.orc" % "orc-mapreduce" % "1.4.0",
 //  "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.8.1"
   "org.apache.hadoop" % "hadoop-client" % "2.8.1",
-//  "org.apache.hadoop" % "hadoop-common" % "2.8.1",
+//  "org.apache.hadoop" % "hadoop-common" % "2.8.1"
   "org.apache.hive" % "hive-exec" % "2.3.0",
-  "org.apache.crunch" % "crunch-hive" % "0.15.0",
-  "org.apache.logging.log4j" % "log4j-api" % "2.8.2"
+//  "org.apache.crunch" % "crunch-hive" % "0.15.0",
+  "org.apache.logging.log4j" % "log4j-api" % "2.8.2",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.2",
+  "com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.9.1"
+
 )
 
 // Without this repo, you might get a failure trying to resolve transitive
 // dependency org.pentaho:pentaho-aggdesigner-algorithm:5.1.5-jhyde
-resolvers += "conjars" at "http://conjars.org/repo"
+//resolvers += "conjars" at "http://conjars.org/repo"

@@ -1,4 +1,4 @@
-
+/*
 import org.apache.crunch.types.orc.OrcUtils
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
@@ -13,6 +13,8 @@ object OrcTest extends App {
   conf.set("fs.default.name", "hdfs://localhost:9000")
 //  System.setProperty("HADOOP_USER_NAME", "hscho")
 //  val schema = TypeDescription.fromString("struct<test_value:string>")
+  val fs = FileSystem.get(conf)
+  fs.delete(new Path("/test123.orc"), true)
 
   val typeStr = "struct<test_value:string,value2:string>"
   val typeInfo = TypeInfoUtils.getTypeInfoFromTypeString(typeStr)
@@ -76,3 +78,4 @@ object OrcTest extends App {
 //  }
 
 }
+*/

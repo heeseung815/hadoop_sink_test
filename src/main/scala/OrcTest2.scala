@@ -1,3 +1,4 @@
+/*
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.hadoop.hive.ql.exec.vector.{ColumnVector, LongColumnVector, VectorizedRowBatch}
@@ -72,3 +73,4 @@ object OrcTest2 extends App {
 
   rows.close()
 }
+*/
