@@ -8,6 +8,9 @@ object JsonTest2 {
   def configureFileSystem(coreSitePath: String, hdfsSitePath: String): FileSystem = {
     var fs: FileSystem = null
     val conf = new Configuration()
+//    conf.set("fs.defaultFS", "hdfs://192.168.1.72:8020")
+//    conf.set("fs.defaultFS", "hdfs://localhost:9000")
+    conf.set("fs.defaultFS", "hdfs://192.168.2.33:9001")
     conf.setBoolean("dfs.support.append", true)
     conf.setBoolean("dfs.client.block.write.replace-datanode-on-failure.enable", true)
     conf.set("dfs.client.block.write.replace-datanode-on-failure.policy", "ALWAYS")
@@ -16,6 +19,9 @@ object JsonTest2 {
     val hdfsSite = new Path(hdfsSitePath)
     conf.addResource(coreSite)
     conf.addResource(hdfsSite)
+//    System.setProperty("HADOOP_USER_NAME", "hadoop")
+//    System.setProperty("HADOOP_USER_NAME", "hscho")
+    System.setProperty("HADOOP_USER_NAME", "iottechlab")
     fs = FileSystem.get(conf)
     fs
   }
@@ -72,12 +78,26 @@ object JsonTest2 {
   }
 
   def main(args: Array[String]): Unit = {
-    val coreSite = "/usr/local/Cellar/hadoop/2.8.1/libexec/etc/hadoop/core-site.xml"
-    val hdfsSite = "/usr/local/Cellar/hadoop/2.8.1/libexec/etc/hadoop/hdfs-site.xml"
+    // for local
+//    val coreSite = "/usr/local/Cellar/hadoop/2.8.1/libexec/etc/hadoop/core-site.xml"
+//    val hdfsSite = "/usr/local/Cellar/hadoop/2.8.1/libexec/etc/hadoop/hdfs-site.xml"
+    // for iot1
+//    val coreSite = "/opt/hadoop/etc/hadoop/core-site.xml"
+//    val hdfsSite = "/opt/hadoop/etc/hadoop/hdfs-site.xml"
+    // for skt hadoop server
+    val coreSite = "/usr//hadoop/hadoop-2.8.1/etc/hadoop/core-site.xml"
+    val hdfsSite = "/usr//hadoop/hadoop-2.8.1/etc/hadoop/hdfs-site.xml"
+
     val fileSystem = configureFileSystem(coreSite, hdfsSite)
 
-    val hdfsFilePath = "hdfs://localhost:9000/test.json"
-    val res = appendToFile(fileSystem, "It's never too late" + " to start something good.\n ", hdfsFilePath)
+    // for local
+//    val hdfsFilePath = "hdfs://localhost:9000/test.json"
+    // for iot1
+//    val hdfsFilePath = "hdfs://192.168.1.72:8020/test.json"
+    // for skt hadoop server
+    val hdfsFilePath = "hdfs://192.168.2.33:9001/test.json"
+
+    val res = appendToFile(fileSystem, "SKT Hadoop Server Tesst...\n", hdfsFilePath)
 
     if (res.equalsIgnoreCase("success")) {
       println("Successfully appended to file")

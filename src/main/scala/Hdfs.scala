@@ -14,8 +14,8 @@ import scala.language.postfixOps
 object Hdfs extends App {
 
   val conf = new Configuration()
-  conf.set("fs.default.name", "hdfs://localhost:9000")
-  System.setProperty("HADOOP_USER_NAME", "hscho")
+  conf.set("fs.defaultFS", "hdfs://192.168.1.72:8020")
+  System.setProperty("HADOOP_USER_NAME", "hadoop")
   //  conf.set("fs.defaultFS", "hdfs://localhost:9000")
   //  System.setProperty("HADOOP_USER_NAME", "hanyoungtak")
 
@@ -55,103 +55,9 @@ object Hdfs extends App {
     //finally { out.close }
   }
 
-  def checkHDFS = {
-    println("==> ???")
-
-    var s: Socket = null
-    try {
-//      val fs = FileSystem.get(conf)
-//      val temp = fs.access(new Path("/"), FsAction.ALL)
-
-//      s = new Socket("192.168.1.72", 8020)
-      s = new Socket("localhost", 9000)
-      println("running!")
-      true
-    } catch {
-      case e: Exception => println("error!!"); false
-    } finally {
-      println("finally")
-//      if (s != null) s.close()
-    }
-//    println(s"${fs}")
-//    println(s"${fs.toString}")
-//    println(s"${fs.getStatus.getUsed}")
-  }
-
-  def serverListening: Unit = {
-//    val socket: Socket = new Socket("localhost", 9000)
-//    if (socket != null) {
-//      println(s"${socket.getKeepAlive}")
-//      println("hdfs is running")
-//    } else {
-//      println("hdfs is not running")
-//    }
-
-    var s: Socket = null
-    try {
-      s = new Socket("localhost", 9000)
-      println("running")
-    } catch {
-      case e: Exception =>
-        println(e)
-        println("++++++++++++++++++++++++++++")
-        println("not running")
-    } finally {
-      if (s != null) {
-        try
-          s.close
-        catch {
-          case e: Exception => ???
-        }
-      }
-    }
-  }
-
-  def checkHDFSWithFuture(): Future[Any] = {
-    println("....")
-    var s: Socket = null
-    Future {
-        try {
-          s = new Socket("localhost", 9000)
-        } catch {
-          case e: Exception => e
-        } finally {
-          if (s != null)
-            s.close()
-        }
-      }
-
-  }
-
-  val result: Future[Any] = checkHDFSWithFuture()
-  println("ees")
-  val temp = Await.result(result, 2 seconds)
-  println("ddd")
-  temp match {
-    case _: Socket => println("success..")
-    case e: Throwable => println("failure.."); e.printStackTrace()
-  }
-//  Thread.sleep(2000)
-//  result.onComplete {
-//    case Success(s) => s.asInstanceOf[Socket].close(); println("success...")
-//    case Failure(e) => println(e.toString)
-//  }
-
-//  val result: Future[Unit] = checkHDFSWithFuture()
-//  Thread.sleep(1000)
-//  result.onComplete {
-//    case Success(x) => println(s"x: ${x.toString}"); println("success")
-//    case Failure(e) => println("......"); println(e)
-//    case _ => println("unit.....")
-//  }
-//  println("terminated...")
-//  val
-  // temp = checkHDFS
-//  println(s"result : ${temp}")
-//  serverListening
-//  Hdfs.write("/testFile1.txt", "Hello World".getBytes)
-//  Hdfs.write("/test1.txt", "Hello World".getBytes)
-//  Hdfs.inputToFile(Hdfs.getFile("/testFile1.txt"))
-//  Hdfs.removeFile("/test1.txt")
-//  Hdfs.createFolder("/testFolder1")
+  Hdfs.write("/testFile1.txt", "Hello World".getBytes)
+  Hdfs.write("/test1.txt", "Hello World".getBytes)
+  Hdfs.inputToFile(Hdfs.getFile("/testFile1.txt"))
+  Hdfs.removeFile("/test1.txt")
+  Hdfs.createFolder("/testFolder1")
 }

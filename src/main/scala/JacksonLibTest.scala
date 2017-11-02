@@ -1,6 +1,9 @@
+import java.sql.Timestamp
+
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
+import play.api.libs.json._
+//import com.fasterxml.jackson.module.scala.DefaultScalaModule
+//import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
 //object JsonUtil {
 //  val mapper = new ObjectMapper() with ScalaObjectMapper
@@ -23,16 +26,48 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 //}
 
 object JacksonLibTest extends App {
-//  val originalMap: Map[String, List[Int]] = Map("a" -> List(1,2), "b" -> List(3,4,5), "c" -> List())
-  val originalMap2 = Map("a" -> "xxx", "b" -> 1, "c" -> "yyy")
+  def parseJsonValueAny(value:Any) : JsValue = {
+    value match {
+      case value: String => JsString(value)
+      case value: Int => JsNumber(value)
+      case value: Long => JsNumber(value)
+      case value: BigInt => JsNumber(value.longValue())
+      case value: Double => JsNumber(value)
+      case value: Float => JsNumber(value.toDouble)
+      case value: Boolean => JsBoolean(value)
+      case value: Timestamp => println("ddd"); JsString(value.toString)
+      case value: Map[String, Any] => {
+        var ret = Json.obj()
+        value.foreach {
+          case (k: String, v: Any) =>
+            if (k.equals("timestamp")) ret = ret + (k, parseJsonValueAny(new Timestamp(v.asInstanceOf[Long])))
+            else ret = ret + (k, parseJsonValueAny(v))
+        }
+        ret
+      }
+      case value: Seq[Any] => println("1"); JsArray(value.map(v => parseJsonValueAny(v)))
+      case value: Array[Int] => println("2"); JsArray(value.map(v => parseJsonValueAny(v)))
+      case _ => JsNull
+    }
+  }
 
-  val mapper = new ObjectMapper with ScalaObjectMapper
-  mapper.registerModule(DefaultScalaModule)
-  val json2: String = mapper.writerWithDefaultPrettyPrinter.writeValueAsString(originalMap2)
+  //new Timestamp(dataValue.asInstanceOf[Long])
+  val originalMap = Map("x" -> Array(1, 2, 3), "y" -> List(3,4,5), "timestamp" -> System.currentTimeMillis())
+  val schema = "x, b, timestamp"
+  val keys: Array[String] = schema.replaceAll(" ", "").split(",")
+  val result: JsValue = parseJsonValueAny(originalMap.filterKeys(keys.contains(_)))
+//  val originalMap2 = Map("a" -> "xxx", "b" -> 1, "c" -> "yyy")
+
+//  val mapper = new ObjectMapper() with ScalaObjectMapper
+//  mapper.registerModule(DefaultScalaModule)
+//  val json2: String = mapper.writerWithDefaultPrettyPrinter.writeValueAsString(originalMap)
   println("======================================================")
+  println(s"${Json.stringify(result)}")
+  println("======================================================")
+  println(Json.prettyPrint(result))
 //  println(originalMap.toString())
-  println(originalMap2.toString())
-  println(json2)
+//  println(originalMap.toString())
+//  println(json2)
 
   /*
  * (Un)marshalling a simple map
